@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.pluginNavigationSafeArgs)
 }
 
 android {
@@ -43,6 +44,9 @@ dependencies {
 
     //Lifecycle
     implementation(libs.bundles.lifecycle)
+
+    //Navigation
+    implementation(libs.bundles.navigation)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
