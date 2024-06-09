@@ -44,9 +44,10 @@ dependencies {
 
     //Lifecycle
     implementation(libs.bundles.lifecycle)
-
     //Navigation
     implementation(libs.bundles.navigation)
+    //Coroutines
+    implementation(libs.bundles.coroutines)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
