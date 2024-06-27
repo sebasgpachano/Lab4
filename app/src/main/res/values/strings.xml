@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Lab4</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- List fragmen-->
+    <string name="more">Más</string>
+
+    <!-- Form fragment-->
+    <string name="name">Nombre</string>
+    <string name="favorite_color">Color favorito</string>
+    <string name="birth_date">Fecha de nacimiento</string>
+    <string name="favorite_city">Ciudad favorita</string>
+    <string name="favorite_number">Número favorito</string>
+    <string name="save">Guardar</string>
+    <string name="loading_text">Cargando...</string>
+    <string name="location">Localización actual</string>
+    <string name="current_location">Localización</string>
+    <string name="register">Registro</string>
 </resources>
