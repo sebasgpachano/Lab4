@@ -5,7 +5,9 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.lab4.R
 import com.example.lab4.databinding.ActivityMainBinding
 import com.example.lab4.ui.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun inflateBinding() {
         binding = ActivityMainBinding.inflate(layoutInflater)
