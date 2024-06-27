@@ -2,6 +2,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.pluginDaggerHilt)
     alias(libs.plugins.pluginNavigationSafeArgs)
     alias(libs.plugins.kotlin.parcelize)
 }
