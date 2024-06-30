@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.bundles.coroutines)
     //Hilt
     implementation(libs.daggerHilt)
+    implementation(libs.play.services.location)
     kapt(libs.daggerHiltCompiler)
 
     //Maps
