@@ -27,6 +27,13 @@ coroutines = "1.8.0"
 hilt = "2.48.1"
 pluginDaggerHilt = "2.48"
 
+#pluginGoogleServices
+pluginGoogleServices = "4.4.1"
+
+#SecretsGradlePlugin
+secretsGradlePlugin = "2.0.1"
+playServicesMaps = "19.0.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -53,6 +60,9 @@ coroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutine
 daggerHilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 daggerHiltCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
+#Maps
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+
 [bundles]
 lifecycle = ["androidxLifecycleLivedata", "androidxLifecycleViewmodel"]
 navigation = ["androidxNavigationFragment", "androidxNavigationUI"]
@@ -64,4 +74,6 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 pluginNavigationSafeArgs = {id = "androidx.navigation.safeargs.kotlin", version.ref = "pluginNavigationSafeArgs"}
 pluginDaggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "pluginDaggerHilt" }
+pluginGoogleServices = { id = "com.google.gms.google-services", version.ref = "pluginGoogleServices" }
+pluginSecretGradle = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 
