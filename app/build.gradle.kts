@@ -74,6 +74,10 @@ dependencies {
     implementation(libs.play.services.location)
     kapt(libs.daggerHiltCompiler)
 
+    //Room
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+
     //Maps
     implementation(libs.play.services.maps)
 
