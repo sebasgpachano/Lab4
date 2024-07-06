@@ -1,14 +1,15 @@
 package com.example.lab4.data.repository.bbdd
 
+import android.content.Context
 import androidx.room.Room
-import com.example.lab4.ui.base.BaseProjectApplication
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-abstract class AppDatabaseManager @Inject constructor(baseProjectApplication: BaseProjectApplication) {
+class AppDatabaseManager @Inject constructor(@ApplicationContext context: Context) {
     val db = Room.databaseBuilder(
-        baseProjectApplication.applicationContext,
+        context,
         AppDatabase::class.java,
         "lab4-database"
     ).build()
