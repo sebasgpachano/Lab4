@@ -79,7 +79,7 @@ dependencies {
     kapt(libs.androidx.room.compiler)
 
     //Maps
-    implementation(libs.play.services.maps)
+    implementation(libs.bundles.maps)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

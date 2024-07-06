@@ -10,7 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import android.Manifest
+import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.lab4.R
 import com.example.lab4.databinding.FragmentFormBinding
 import com.example.lab4.ui.base.BaseFragment
@@ -20,6 +22,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -46,13 +49,47 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                val location: Location? = locationResult.lastLocation
-                location?.let {
+                locationResult.lastLocation?.let {
                     val lat = it.latitude
                     val lon = it.longitude
-                    binding?.tvCurrentLocation?.text = "Latitude: $lat, Longitude: $lon"
-                    Log.d("LocationFragment", "Latitude: $lat, Longitude: $lon")
+                    binding?.tvCurrentLocation?.text = "Latitud: $lat, Longitud: $lon"
+                    Log.d(TAG, "Latitud: $lat, Longitud: $lon")
                 }
+            }
+        }
+    }
+
+    private val callRequestPermissionLocation = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            getLocation()
+        } else {
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Log.d(TAG, "l> Permiso no concedido")
+            }
+            Log.d(TAG, "l> Permiso denegado")
+        }
+    }
+
+    private fun askPermissionLocation() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                Log.d(TAG, "l> Permiso ya concedido")
+                getLocation()
+            }
+
+            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                Log.d(TAG, "l> Permiso de localización no concedido, volver a solicitar")
+                callRequestPermissionLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+
+            else -> {
+                Log.d(TAG, "l> Permiso localización no concedido, lo volvemos a solicitar")
+                callRequestPermissionLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
         }
     }
@@ -87,7 +124,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btLocation -> {
-                getLocation()
+                askPermissionLocation()
             }
 
             R.id.btSave -> {
@@ -108,31 +145,28 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                     if (location != null) {
                         val lat = location.latitude
                         val lon = location.longitude
-                        binding?.tvCurrentLocation?.text = "Latitude: $lat, Longitude: $lon"
-                        Log.d("LocationFragment", "Latitude: $lat, Longitude: $lon")
+                        binding?.tvCurrentLocation?.text = "Latitud: $lat, Longitud: $lon"
+                        Log.d(TAG, "Latitud: $lat, Longitud: $lon")
                     } else {
                         binding?.tvCurrentLocation?.text = "Location not available"
-                        Log.d("LocationFragment", "Location not available, requesting new location")
+                        Log.d(TAG, "Location not available, requesting new location")
                         startLocationUpdates()
                     }
                 }
                 .addOnFailureListener { e ->
-                    Log.e("LocationFragment", "Failed to get location", e)
+                    Log.e(TAG, "Failed to get location")
                 }
         } else {
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
+            callRequestPermissionLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 
     private fun startLocationUpdates() {
-        val locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+            .setWaitForAccurateLocation(false)
+            .setMinUpdateIntervalMillis(5000)
+            .setMaxUpdateDelayMillis(20000)
+            .build()
 
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -144,18 +178,9 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getLocation()
-            } else {
-                requireContext().toastLong("Permiso denegado")
-            }
-        }
+    override fun onStop() {
+        super.onStop()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
-
 
 }

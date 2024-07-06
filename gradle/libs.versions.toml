@@ -78,6 +78,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 lifecycle = ["androidxLifecycleLivedata", "androidxLifecycleViewmodel"]
 navigation = ["androidxNavigationFragment", "androidxNavigationUI"]
 coroutines = ["coroutinesCore", "coroutinesAndroid"]
+maps = ["play-services-maps", "play-services-location"]
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
