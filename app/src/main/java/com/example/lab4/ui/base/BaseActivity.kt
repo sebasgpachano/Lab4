@@ -2,6 +2,7 @@ package com.example.lab4.ui.base
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -147,6 +148,14 @@ abstract class BaseActivity<B : ViewBinding> : AppCompatActivity(), View.OnClick
             ) {
                 loadingDialogFragment.dismiss()
             }
+        }
+    }
+
+    fun hideKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

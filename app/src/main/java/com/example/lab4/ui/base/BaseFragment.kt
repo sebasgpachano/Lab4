@@ -81,6 +81,10 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         baseActivity.fragmentLayoutWithToolbar()
     }
 
+    fun hideKeyboard() {
+        baseActivity.hideKeyboard()
+    }
+
     abstract fun inflateBinding()
     abstract fun createViewAfterInflateBinding(
         inflater: LayoutInflater,
