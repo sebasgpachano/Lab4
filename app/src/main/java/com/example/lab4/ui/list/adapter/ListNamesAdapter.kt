@@ -7,7 +7,7 @@ import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.databinding.ItemNamesBinding
 import com.example.lab4.ui.list.adapter.viewholder.UserViewHolder
 
-class ListNamesAdapter(private val userList: List<UserBD>) :
+class ListNamesAdapter(private val listNamesAdapterListener: ListNamesAdapterListener) :
     ListAdapter<UserBD, UserViewHolder>(UserDiffCallback()) {
 
     interface ListNamesAdapterListener {
@@ -23,8 +23,5 @@ class ListNamesAdapter(private val userList: List<UserBD>) :
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.onBind(getItem(position), position)
     }
-
-    override fun getItemCount() = userList.size
-
 
 }

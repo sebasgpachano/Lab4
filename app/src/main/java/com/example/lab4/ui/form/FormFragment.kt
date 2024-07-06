@@ -14,6 +14,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.fragment.findNavController
 import com.example.lab4.R
 import com.example.lab4.databinding.FragmentFormBinding
 import com.example.lab4.ui.base.BaseFragment
@@ -140,6 +141,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                     binding?.tvLongitude?.text.toString().toDouble()
                 )
                 hideKeyboard()
+                findNavController().navigateUp()
             }
         }
     }
