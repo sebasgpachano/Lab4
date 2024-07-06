@@ -71,11 +71,10 @@ dependencies {
     implementation(libs.bundles.coroutines)
     //Hilt
     implementation(libs.daggerHilt)
-    implementation(libs.play.services.location)
     kapt(libs.daggerHiltCompiler)
 
     //Room
-    implementation(libs.androidx.room.runtime)
+    implementation(libs.bundles.room)
     kapt(libs.androidx.room.compiler)
 
     //Maps

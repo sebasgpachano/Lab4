@@ -73,12 +73,14 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 #Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 
 [bundles]
 lifecycle = ["androidxLifecycleLivedata", "androidxLifecycleViewmodel"]
 navigation = ["androidxNavigationFragment", "androidxNavigationUI"]
 coroutines = ["coroutinesCore", "coroutinesAndroid"]
 maps = ["play-services-maps", "play-services-location"]
+room = ["androidx-room-runtime", "androidx-room-ktx"]
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
