@@ -17,4 +17,6 @@
     <string name="location">Localización actual</string>
     <string name="current_location">Localización</string>
     <string name="register">Registro</string>
+    <string name="add_user">Añadir usuario</string>
+    <string name="list">Lista</string>
 </resources>
