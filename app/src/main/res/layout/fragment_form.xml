@@ -96,12 +96,22 @@
         app:layout_constraintTop_toBottomOf="@id/etNumber" />
 
     <TextView
-        android:id="@+id/tvCurrentLocation"
+        android:id="@+id/tvLatitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         tools:text="Hola"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLocation" />
+
+    <TextView
+        android:id="@+id/tvLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        tools:text="Hola"
+        app:layout_constraintStart_toEndOf="@id/tvLatitude"
         app:layout_constraintTop_toBottomOf="@id/tvLocation" />
 
     <com.google.android.material.button.MaterialButton
@@ -111,7 +121,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/current_location"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCurrentLocation" />
+        app:layout_constraintTop_toBottomOf="@id/tvLongitude" />
 
 
     <com.google.android.material.button.MaterialButton

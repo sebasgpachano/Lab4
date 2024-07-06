@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,7 +34,6 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-    private var LOCATION_PERMISSION_REQUEST_CODE = 1
 
     override fun inflateBinding() {
         binding = FragmentFormBinding.inflate(layoutInflater)
@@ -48,11 +48,13 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
         setUpListeners()
 
         locationCallback = object : LocationCallback() {
+            @SuppressLint("SetTextI18n")
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.lastLocation?.let {
                     val lat = it.latitude
                     val lon = it.longitude
-                    binding?.tvCurrentLocation?.text = "Latitud: $lat, Longitud: $lon"
+                    binding?.tvLatitude?.text = "Latitud: $lat"
+                    binding?.tvLongitude?.text = "Longitud: $lon"
                     Log.d(TAG, "Latitud: $lat, Longitud: $lon")
                 }
             }
@@ -128,11 +130,21 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
             }
 
             R.id.btSave -> {
-                //TODO
+                formViewModel.addUser(
+                    binding?.etName?.text.toString(),
+                    binding?.etColor?.text.toString(),
+                    binding?.etBirthDate?.text.toString(),
+                    binding?.etCity?.text.toString(),
+                    binding?.etNumber?.text.toString().toInt(),
+                    binding?.tvLatitude?.text.toString().toDouble(),
+                    binding?.tvLongitude?.text.toString().toDouble()
+                )
+                hideKeyboard()
             }
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getLocation() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -145,10 +157,11 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                     if (location != null) {
                         val lat = location.latitude
                         val lon = location.longitude
-                        binding?.tvCurrentLocation?.text = "Latitud: $lat, Longitud: $lon"
+                        binding?.tvLatitude?.text = "$lat"
+                        binding?.tvLongitude?.text = "$lon"
                         Log.d(TAG, "Latitud: $lat, Longitud: $lon")
                     } else {
-                        binding?.tvCurrentLocation?.text = "Location not available"
+                        binding?.tvLatitude?.text = "Location not available"
                         Log.d(TAG, "Location not available, requesting new location")
                         startLocationUpdates()
                     }
