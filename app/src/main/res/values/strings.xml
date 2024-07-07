@@ -3,6 +3,11 @@
 
     <!-- List fragment-->
     <string name="list_fragment_title">Lista</string>
+    <string name="dialog_text">¿Estás seguro de que quieres borrar este elemento?</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_confirm">Eliminar</string>
+    <string name="user_deleted">Usuario borrado</string>
+    <string name="confirm_delete_dialog_tag">ConfirmDeleteDialog</string>
 
     <!-- Form fragment-->
     <string name="name">Nombre</string>
