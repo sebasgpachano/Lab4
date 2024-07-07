@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.lab4.R
 import com.example.lab4.databinding.FragmentDetailBinding
 import com.example.lab4.ui.base.BaseFragment
+import com.example.lab4.ui.extensions.toastLong
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,8 +30,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) {
-        val id = args.id
-        detailViewModel.getUserById(id)
+        detailViewModel.getUserById(args.id)
+        setUpListeners()
+    }
+
+    private fun setUpListeners() {
+        binding?.btCityLocation?.setOnClickListener {
+            findNavController().navigate(
+                DetailFragmentDirections.actionDetailFragmentToMapFragment(
+                    binding?.tvCity?.text.toString()
+                )
+            )
+        }
     }
 
     override fun configureToolbarAndConfigScreenSections() {
@@ -39,6 +51,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
     }
 
     override fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            detailViewModel.loadingFlow.collect {
+                showLoading(it)
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             detailViewModel.userStateFlow.collect { user ->
                 user?.let {
@@ -50,6 +68,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
                         tvNumber.text = user.favoriteNumber.toString()
                     }
                 }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            detailViewModel.errorFlow.collect { error ->
+                requireContext().toastLong(error.message)
             }
         }
     }
