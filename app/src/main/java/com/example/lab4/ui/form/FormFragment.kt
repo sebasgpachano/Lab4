@@ -15,10 +15,14 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.lab4.R
+import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.databinding.FragmentFormBinding
 import com.example.lab4.ui.base.BaseFragment
+import com.example.lab4.ui.extensions.invisible
 import com.example.lab4.ui.extensions.toastLong
+import com.example.lab4.ui.extensions.visible
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -32,6 +36,8 @@ import kotlinx.coroutines.launch
 class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
 
     private val formViewModel: FormViewModel by viewModels()
+    private val args: FormFragmentArgs by navArgs()
+    private var isEditMode: Boolean = false
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
@@ -59,6 +65,13 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                     Log.d(TAG, "Latitud: $lat, Longitud: $lon")
                 }
             }
+        }
+
+        isEditMode = args.id != -1L
+        if (isEditMode) {
+            formViewModel.getUserById(args.id.toInt())
+            setEditButtonsVisible()
+            disableEdits()
         }
     }
 
@@ -100,6 +113,12 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
     private fun setUpListeners() {
         binding?.btLocation?.setOnClickListener(this)
         binding?.btSave?.setOnClickListener(this)
+        binding?.ibEditName?.setOnClickListener(this)
+        binding?.ibEditColor?.setOnClickListener(this)
+        binding?.ibEditBirthDate?.setOnClickListener(this)
+        binding?.ibEditCity?.setOnClickListener(this)
+        binding?.ibEditNumber?.setOnClickListener(this)
+        binding?.ibEditLocation?.setOnClickListener(this)
     }
 
     override fun configureToolbarAndConfigScreenSections() {
@@ -115,9 +134,27 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
+            formViewModel.userStateFlow.collect { user ->
+                user?.let { fillForm(it) }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             formViewModel.errorFlow.collect { error ->
                 requireContext().toastLong(error.message)
             }
+        }
+    }
+
+    private fun fillForm(user: UserBD) {
+        binding?.apply {
+            etName.setText(user.name)
+            etColor.setText(user.favoriteColor)
+            etBirthDate.setText(user.birthDate)
+            etCity.setText(user.favoriteCity)
+            etNumber.setText(user.favoriteNumber.toString())
+            tvLatitude.text = user.latitude.toString()
+            tvLongitude.text = user.longitude.toString()
         }
     }
 
@@ -131,17 +168,33 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
             }
 
             R.id.btSave -> {
-                formViewModel.addUser(
-                    binding?.etName?.text.toString(),
-                    binding?.etColor?.text.toString(),
-                    binding?.etBirthDate?.text.toString(),
-                    binding?.etCity?.text.toString(),
-                    binding?.etNumber?.text.toString().toInt(),
-                    binding?.tvLatitude?.text.toString().toDouble(),
-                    binding?.tvLongitude?.text.toString().toDouble()
-                )
+                val name = binding?.etName?.text.toString()
+                val color = binding?.etColor?.text.toString()
+                val birthDate = binding?.etBirthDate?.text.toString()
+                val city = binding?.etCity?.text.toString()
+                val number = binding?.etNumber?.text.toString().toInt()
+                val lat = binding?.tvLatitude?.text.toString().toDouble()
+                val lon = binding?.tvLongitude?.text.toString().toDouble()
+
+                if (isEditMode) {
+                    args.id.toInt().let {
+                        formViewModel.updateUser(it, name, color, birthDate, city, number, lat, lon)
+                        requireContext().toastLong("Usuario actualizado")
+                    }
+                } else {
+                    val user = UserBD(
+                        name = name,
+                        favoriteColor = color,
+                        birthDate = birthDate,
+                        favoriteCity = city,
+                        favoriteNumber = number,
+                        latitude = lat,
+                        longitude = lon
+                    )
+                    formViewModel.addUser(user)
+                    findNavController().navigateUp()
+                }
                 hideKeyboard()
-                findNavController().navigateUp()
             }
         }
     }
@@ -196,6 +249,25 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
     override fun onStop() {
         super.onStop()
         fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun setEditButtonsVisible() {
+        binding?.ibEditName?.visible()
+        binding?.ibEditColor?.visible()
+        binding?.ibEditBirthDate?.visible()
+        binding?.ibEditCity?.visible()
+        binding?.ibEditNumber?.visible()
+        binding?.ibEditLocation?.visible()
+    }
+
+    private fun disableEdits() {
+        binding?.etName?.isEnabled = false
+        binding?.etColor?.isEnabled = false
+        binding?.etBirthDate?.isEnabled = false
+        binding?.etCity?.isEnabled = false
+        binding?.etNumber?.isEnabled = false
+        binding?.btLocation?.invisible()
+        binding?.btSave?.invisible()
     }
 
 }

@@ -8,12 +8,17 @@ import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FormViewModel @Inject constructor(private val appDatabaseManager: AppDatabaseManager) :
     BaseViewModel() {
+
+    private val userMutableStateFlow = MutableStateFlow<UserBD?>(null)
+    val userStateFlow: StateFlow<UserBD?> = userMutableStateFlow
 
     init {
         printLogsUsers()
@@ -31,7 +36,24 @@ class FormViewModel @Inject constructor(private val appDatabaseManager: AppDatab
         }
     }
 
-    fun addUser(
+    fun addUser(user: UserBD) {
+        viewModelScope.launch(Dispatchers.IO) {
+            appDatabaseManager.db
+                .userDao()
+                .insertUser(user)
+        }
+    }
+
+    fun getUserById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val user = appDatabaseManager.db.userDao().getUserById(id)
+            userMutableStateFlow.value = user
+        }
+    }
+
+    //TODO change parameters
+    fun updateUser(
+        id: Int,
         name: String,
         color: String,
         birthDate: String,
@@ -41,19 +63,8 @@ class FormViewModel @Inject constructor(private val appDatabaseManager: AppDatab
         lon: Double
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            appDatabaseManager.db
-                .userDao()
-                .insertUser(
-                    UserBD(
-                        name = name,
-                        favoriteColor = color,
-                        birthDate = birthDate,
-                        favoriteCity = city,
-                        favoriteNumber = number,
-                        latitude = lat,
-                        longitude = lon
-                    )
-                )
+            appDatabaseManager.db.userDao()
+                .updateUser(id, name, color, birthDate, city, number, lat, lon)
         }
     }
 }
