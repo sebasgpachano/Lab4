@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lab4.R
 import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.databinding.FragmentListBinding
 import com.example.lab4.ui.base.BaseFragment
+import com.example.lab4.ui.dialogfragment.ConfirmDeleteDialogFragment
 import com.example.lab4.ui.extensions.toastLong
 import com.example.lab4.ui.list.adapter.ListNamesAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,10 +23,11 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListFragment : BaseFragment<FragmentListBinding>(),
-    ListNamesAdapter.ListNamesAdapterListener {
+    ListNamesAdapter.ListNamesAdapterListener, ConfirmDeleteDialogFragment.ConfirmDeleteListener {
 
     private val listViewModel: ListViewModel by viewModels()
     private val listNamesAdapter = ListNamesAdapter(this)
+    private var deletePosition: Int? = null
 
     override fun inflateBinding() {
         binding = FragmentListBinding.inflate(layoutInflater)
@@ -44,6 +48,25 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
             layoutManager = LinearLayoutManager(context)
             adapter = listNamesAdapter
         }
+
+        val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                deletePosition = position
+                showConfirmDeleteDialog(position)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding?.rvList)
     }
 
     private fun setUpListeners() {
@@ -75,6 +98,12 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
                 requireContext().toastLong(error.message)
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            listViewModel.successFlow.collect {
+                requireContext().toastLong(getString(R.string.user_deleted))
+            }
+        }
     }
 
     private fun updateUsers(userList: List<UserBD>) {
@@ -90,6 +119,18 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
     override fun onItemClick(id: Int) {
         val action = ListFragmentDirections.actionListFragmentToDetailFragment(id)
         findNavController().navigate(action)
+    }
+
+    override fun onConfirmDelete(position: Int) {
+        deletePosition?.let {
+            val user = listNamesAdapter.currentList[it]
+            listViewModel.deleteUser(user)
+        }
+    }
+
+    override fun onCancelDelete(position: Int) {
+        listNamesAdapter.notifyItemChanged(position)
+        deletePosition = null
     }
 
 }

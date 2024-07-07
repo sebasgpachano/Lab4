@@ -23,5 +23,4 @@ class ListNamesAdapter(private val listNamesAdapterListener: ListNamesAdapterLis
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.onBind(getItem(position), position)
     }
-
 }
