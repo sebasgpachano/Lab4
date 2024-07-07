@@ -104,7 +104,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
 
     override fun configureToolbarAndConfigScreenSections() {
         fragmentLayoutWithToolbar()
-        showToolbar(title = getString(R.string.register), showBack = true)
+        showToolbar(title = getString(R.string.form_fragment_title), showBack = true)
     }
 
     override fun observeViewModel() {
