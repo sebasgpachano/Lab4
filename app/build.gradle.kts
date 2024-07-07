@@ -72,11 +72,9 @@ dependencies {
     //Hilt
     implementation(libs.daggerHilt)
     kapt(libs.daggerHiltCompiler)
-
     //Room
     implementation(libs.bundles.room)
     kapt(libs.androidx.room.compiler)
-
     //Maps
     implementation(libs.bundles.maps)
 

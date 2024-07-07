@@ -36,9 +36,11 @@ secretsGradlePlugin = "2.0.1"
 #Maps
 playServicesMaps = "19.0.0"
 playServicesLocation = "21.3.0"
+places = "3.5.0"
 
 #Room
 roomRuntime = "2.6.1"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,17 +71,19 @@ daggerHiltCompiler = { group = "com.google.dagger", name = "hilt-android-compile
 #Maps
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
 
 #Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 
+
 [bundles]
 lifecycle = ["androidxLifecycleLivedata", "androidxLifecycleViewmodel"]
 navigation = ["androidxNavigationFragment", "androidxNavigationUI"]
 coroutines = ["coroutinesCore", "coroutinesAndroid"]
-maps = ["play-services-maps", "play-services-location"]
+maps = ["play-services-maps", "play-services-location", "places"]
 room = ["androidx-room-runtime", "androidx-room-ktx"]
 
 [plugins]
