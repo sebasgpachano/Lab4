@@ -60,3 +60,6 @@ Thumbs.db
 
 # Java class files
 *.class
+
+# Secret properties
+secrets.properties
