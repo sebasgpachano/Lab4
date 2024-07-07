@@ -21,6 +21,15 @@ interface UserDAO {
     @Delete
     fun deleteUser(user: UserBD)
 
-    @Query("DELETE FROM users WHERE id = :id")
-    fun deleteUserById(id: Int)
+    @Query("UPDATE users SET name = :name, favoriteColor = :color, birthDate = :birthDate, favoriteCity = :city, favoriteNumber = :number, latitude = :lat, longitude = :lon WHERE id = :id")
+    fun updateUser(
+        id: Int,
+        name: String,
+        color: String,
+        birthDate: String,
+        city: String,
+        number: Int,
+        lat: Double,
+        lon: Double
+    )
 }

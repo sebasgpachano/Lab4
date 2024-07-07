@@ -71,7 +71,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
 
     private fun setUpListeners() {
         binding?.ibAdd?.setOnClickListener {
-            findNavController().navigate(ListFragmentDirections.actionListFragmentToFormFragment())
+            findNavController().navigate(ListFragmentDirections.actionListFragmentToFormFragment(-1L))
         }
     }
 
@@ -117,7 +117,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
     }
 
     override fun onItemClick(id: Int) {
-        val action = ListFragmentDirections.actionListFragmentToDetailFragment(id)
+        val action = ListFragmentDirections.actionListFragmentToFormFragment(id.toLong())
         findNavController().navigate(action)
     }
 
