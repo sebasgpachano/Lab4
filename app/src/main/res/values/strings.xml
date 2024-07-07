@@ -20,4 +20,9 @@
     <!-- Detail fragment-->
     <string name="detail_fragment_title">Detalle</string>
     <string name="toolbar_back">toolbar_back</string>
+    <string name="favorite_city_button">Ciudad favorita</string>
+
+    <!-- Map fragment-->
+    <string name="map_fragment_title">Mapa</string>
+
 </resources>
