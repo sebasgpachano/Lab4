@@ -25,10 +25,6 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
     private val listViewModel: ListViewModel by viewModels()
     private val listNamesAdapter = ListNamesAdapter(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun inflateBinding() {
         binding = FragmentListBinding.inflate(layoutInflater)
     }
@@ -58,7 +54,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
 
     override fun configureToolbarAndConfigScreenSections() {
         fragmentLayoutWithToolbar()
-        showToolbar(title = getString(R.string.list), showBack = true)
+        showToolbar(title = getString(R.string.list_fragment_title), showBack = true)
     }
 
     override fun observeViewModel() {
@@ -92,7 +88,8 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
     }
 
     override fun onItemClick(id: Int) {
-        //TODO
+        val action = ListFragmentDirections.actionListFragmentToDetailFragment(id)
+        findNavController().navigate(action)
     }
 
 }

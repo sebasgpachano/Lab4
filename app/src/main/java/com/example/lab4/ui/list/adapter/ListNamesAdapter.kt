@@ -17,7 +17,7 @@ class ListNamesAdapter(private val listNamesAdapterListener: ListNamesAdapterLis
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemNamesBinding.inflate(layoutInflater, parent, false)
-        return UserViewHolder(binding)
+        return UserViewHolder(binding, listNamesAdapterListener)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
