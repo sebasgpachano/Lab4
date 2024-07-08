@@ -22,17 +22,12 @@
     <string name="current_location">Localización</string>
     <string name="form_fragment_title">Registro</string>
     <string name="add_user">Añadir usuario</string>
-    <string name="edit_name">Editar nombre</string>
-    <string name="edit_color">Editar color favorito</string>
-    <string name="edit_birthDate">Editar fecha de nacimiento</string>
-    <string name="edit_city">Editar ciudad favorita</string>
-    <string name="edit_number">Editar número favorito</string>
-    <string name="edit_location">Editar ubicación</string>
+    <string name="edit_data">Editar datos</string>
+    <string name="city_maps">Ver ciudad</string>
 
     <!-- Detail fragment-->
     <string name="detail_fragment_title">Detalle</string>
     <string name="favorite_city_button">Ciudad favorita</string>
-    <string name="button_save_changes">Guardar cambios</string>
 
     <!-- Map fragment-->
     <string name="map_fragment_title">Mapa</string>
