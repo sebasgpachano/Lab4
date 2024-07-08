@@ -20,7 +20,7 @@ import com.example.lab4.R
 import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.databinding.FragmentFormBinding
 import com.example.lab4.ui.base.BaseFragment
-import com.example.lab4.ui.extensions.invisible
+import com.example.lab4.ui.extensions.gone
 import com.example.lab4.ui.extensions.toastLong
 import com.example.lab4.ui.extensions.visible
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -70,7 +70,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
         isEditMode = args.id != -1L
         if (isEditMode) {
             formViewModel.getUserById(args.id.toInt())
-            setEditButtonsVisible()
+            binding?.ibEdit?.visible()
             disableEdits()
         }
     }
@@ -113,12 +113,8 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
     private fun setUpListeners() {
         binding?.btLocation?.setOnClickListener(this)
         binding?.btSave?.setOnClickListener(this)
-        binding?.ibEditName?.setOnClickListener(this)
-        binding?.ibEditColor?.setOnClickListener(this)
-        binding?.ibEditBirthDate?.setOnClickListener(this)
-        binding?.ibEditCity?.setOnClickListener(this)
-        binding?.ibEditNumber?.setOnClickListener(this)
-        binding?.ibEditLocation?.setOnClickListener(this)
+        binding?.ibEdit?.setOnClickListener(this)
+        binding?.btCity?.setOnClickListener(this)
     }
 
     override fun configureToolbarAndConfigScreenSections() {
@@ -167,6 +163,10 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                 askPermissionLocation()
             }
 
+            R.id.ibEdit -> {
+                enableEdits()
+            }
+
             R.id.btSave -> {
                 val name = binding?.etName?.text.toString()
                 val color = binding?.etColor?.text.toString()
@@ -177,10 +177,18 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                 val lon = binding?.tvLongitude?.text.toString().toDouble()
 
                 if (isEditMode) {
-                    args.id.toInt().let {
-                        formViewModel.updateUser(it, name, color, birthDate, city, number, lat, lon)
-                        requireContext().toastLong("Usuario actualizado")
-                    }
+                    formViewModel.updateUser(
+                        args.id.toInt(),
+                        name,
+                        color,
+                        birthDate,
+                        city,
+                        number,
+                        lat,
+                        lon
+                    )
+                    requireContext().toastLong("Usuario actualizado")
+                    disableEdits()
                 } else {
                     val user = UserBD(
                         name = name,
@@ -195,6 +203,12 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                     findNavController().navigateUp()
                 }
                 hideKeyboard()
+            }
+
+            R.id.btCity -> {
+                val action =
+                    FormFragmentDirections.actionFormFragmentToMapFragment(binding?.etCity?.text.toString())
+                findNavController().navigate(action)
             }
         }
     }
@@ -251,23 +265,26 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    private fun setEditButtonsVisible() {
-        binding?.ibEditName?.visible()
-        binding?.ibEditColor?.visible()
-        binding?.ibEditBirthDate?.visible()
-        binding?.ibEditCity?.visible()
-        binding?.ibEditNumber?.visible()
-        binding?.ibEditLocation?.visible()
-    }
-
     private fun disableEdits() {
         binding?.etName?.isEnabled = false
         binding?.etColor?.isEnabled = false
         binding?.etBirthDate?.isEnabled = false
         binding?.etCity?.isEnabled = false
         binding?.etNumber?.isEnabled = false
-        binding?.btLocation?.invisible()
-        binding?.btSave?.invisible()
+        binding?.btLocation?.gone()
+        binding?.btSave?.isEnabled = false
+        binding?.btCity?.visible()
+    }
+
+    private fun enableEdits() {
+        binding?.etName?.isEnabled = true
+        binding?.etColor?.isEnabled = true
+        binding?.etBirthDate?.isEnabled = true
+        binding?.etCity?.isEnabled = true
+        binding?.etNumber?.isEnabled = true
+        binding?.btLocation?.visible()
+        binding?.btSave?.isEnabled = true
+        binding?.btCity?.gone()
     }
 
 }
