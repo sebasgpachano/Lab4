@@ -1,12 +1,11 @@
-package com.example.lab4.data.repository.bbdd.user
+package com.example.lab4.data.model.user
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.example.lab4.data.model.BaseModel
+import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "users")
-data class UserBD(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+@Parcelize
+data class UserModel(
+    val id: Int = 0,
     val name: String,
     val favoriteColor: String,
     val birthDate: String,
@@ -14,4 +13,4 @@ data class UserBD(
     val favoriteNumber: Int,
     val latitude: Double,
     val longitude: Double
-)
+) : BaseModel()
