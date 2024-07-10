@@ -2,6 +2,7 @@
     <string name="app_name">Lab4</string>
     <string name="toolbar_back">toolbar_back</string>
     <string name="loading_text">Cargando...</string>
+    <string name="error_unknown_error">Error desconocido</string>
 
     <!-- List fragment-->
     <string name="list_fragment_title">Lista</string>

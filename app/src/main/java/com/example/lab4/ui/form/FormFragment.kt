@@ -17,10 +17,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.lab4.R
+import com.example.lab4.data.model.user.UserModel
 import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.databinding.FragmentFormBinding
 import com.example.lab4.ui.base.BaseFragment
 import com.example.lab4.ui.extensions.gone
+import com.example.lab4.ui.extensions.invisible
 import com.example.lab4.ui.extensions.toastLong
 import com.example.lab4.ui.extensions.visible
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -72,6 +74,8 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
             formViewModel.getUserById(args.id.toInt())
             binding?.ibEdit?.visible()
             disableEdits()
+        } else {
+            binding?.btCity?.invisible()
         }
     }
 
@@ -142,7 +146,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
         }
     }
 
-    private fun fillForm(user: UserBD) {
+    private fun fillForm(user: UserModel) {
         binding?.apply {
             etName.setText(user.name)
             etColor.setText(user.favoriteColor)
@@ -177,20 +181,21 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                 val lon = binding?.tvLongitude?.text.toString().toDouble()
 
                 if (isEditMode) {
-                    formViewModel.updateUser(
-                        args.id.toInt(),
-                        name,
-                        color,
-                        birthDate,
-                        city,
-                        number,
-                        lat,
-                        lon
+                    val user = UserModel(
+                        id = args.id.toInt(),
+                        name = name,
+                        favoriteColor = color,
+                        birthDate = birthDate,
+                        favoriteCity = city,
+                        favoriteNumber = number,
+                        latitude = lat,
+                        longitude = lon
                     )
+                    formViewModel.updateUser(user)
                     requireContext().toastLong("Usuario actualizado")
                     disableEdits()
                 } else {
-                    val user = UserBD(
+                    val user = UserModel(
                         name = name,
                         favoriteColor = color,
                         birthDate = birthDate,
@@ -235,7 +240,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                         startLocationUpdates()
                     }
                 }
-                .addOnFailureListener { e ->
+                .addOnFailureListener {
                     Log.e(TAG, "Failed to get location")
                 }
         } else {
@@ -271,7 +276,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
         binding?.etBirthDate?.isEnabled = false
         binding?.etCity?.isEnabled = false
         binding?.etNumber?.isEnabled = false
-        binding?.btLocation?.gone()
+        binding?.btLocation?.invisible()
         binding?.btSave?.isEnabled = false
         binding?.btCity?.visible()
     }

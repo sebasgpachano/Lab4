@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab4.R
+import com.example.lab4.data.model.user.UserModel
 import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.databinding.FragmentListBinding
 import com.example.lab4.ui.base.BaseFragment
@@ -106,7 +107,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
         }
     }
 
-    private fun updateUsers(userList: List<UserBD>) {
+    private fun updateUsers(userList: List<UserModel>) {
         listNamesAdapter.submitList(userList) {
             binding?.rvList?.scrollToPosition(0)
         }
