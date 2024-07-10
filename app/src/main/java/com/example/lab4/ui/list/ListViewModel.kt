@@ -56,6 +56,7 @@ class ListViewModel @Inject constructor(
                     }
 
                     is BaseResponse.Success -> {
+                        loadingMutableSharedFlow.emit(false)
                         getUsers()
                         successSharedFlow.emit(true)
                     }

@@ -78,7 +78,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
 
     override fun configureToolbarAndConfigScreenSections() {
         fragmentLayoutWithToolbar()
-        showToolbar(title = getString(R.string.list_fragment_title), showBack = true)
+        showToolbar(title = getString(R.string.list_fragment_title), showBack = false)
     }
 
     override fun observeViewModel() {

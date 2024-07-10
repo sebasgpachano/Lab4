@@ -30,11 +30,12 @@ class FormViewModel @Inject constructor(
             insertUserUseCase(user).collect {
                 when (it) {
                     is BaseResponse.Error -> {
+                        loadingMutableSharedFlow.emit(false)
                         errorMutableSharedFlow.emit(it.error)
                     }
 
                     is BaseResponse.Success -> {
-                        //Handle success
+                        loadingMutableSharedFlow.emit(false)
                     }
                 }
             }
@@ -46,11 +47,13 @@ class FormViewModel @Inject constructor(
             getUserByIdUseCase(id).collect {
                 when (it) {
                     is BaseResponse.Error -> {
+                        loadingMutableSharedFlow.emit(false)
                         errorMutableSharedFlow.emit(it.error)
                     }
 
                     is BaseResponse.Success -> {
                         userMutableStateFlow.value = it.data
+                        loadingMutableSharedFlow.emit(false)
                     }
                 }
             }
@@ -62,11 +65,12 @@ class FormViewModel @Inject constructor(
             updateUserUseCase(user).collect {
                 when (it) {
                     is BaseResponse.Error -> {
+                        loadingMutableSharedFlow.emit(false)
                         errorMutableSharedFlow.emit(it.error)
                     }
 
                     is BaseResponse.Success -> {
-                        //Handle success
+                        loadingMutableSharedFlow.emit(false)
                     }
                 }
             }
