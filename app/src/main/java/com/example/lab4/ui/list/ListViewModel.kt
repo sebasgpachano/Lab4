@@ -31,6 +31,7 @@ class ListViewModel @Inject constructor(
 
     fun getUsers() {
         viewModelScope.launch(Dispatchers.IO) {
+            loadingMutableSharedFlow.emit(true)
             getAllUsersUseCase().collect { user ->
                 when (user) {
                     is BaseResponse.Error -> {
@@ -49,6 +50,7 @@ class ListViewModel @Inject constructor(
 
     fun deleteUser(user: UserModel) {
         viewModelScope.launch(Dispatchers.IO) {
+            loadingMutableSharedFlow.emit(true)
             deleteUserUseCase(user).collect {
                 when (it) {
                     is BaseResponse.Error -> {

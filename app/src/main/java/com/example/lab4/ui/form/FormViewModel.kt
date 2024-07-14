@@ -27,6 +27,7 @@ class FormViewModel @Inject constructor(
 
     fun addUser(user: UserModel) {
         viewModelScope.launch(Dispatchers.IO) {
+            loadingMutableSharedFlow.emit(true)
             insertUserUseCase(user).collect {
                 when (it) {
                     is BaseResponse.Error -> {
@@ -44,6 +45,7 @@ class FormViewModel @Inject constructor(
 
     fun getUserById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
+            loadingMutableSharedFlow.emit(true)
             getUserByIdUseCase(id).collect {
                 when (it) {
                     is BaseResponse.Error -> {
@@ -62,6 +64,7 @@ class FormViewModel @Inject constructor(
 
     fun updateUser(user: UserModel) {
         viewModelScope.launch(Dispatchers.IO) {
+            loadingMutableSharedFlow.emit(true)
             updateUserUseCase(user).collect {
                 when (it) {
                     is BaseResponse.Error -> {
