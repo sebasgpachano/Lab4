@@ -12,14 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab4.R
 import com.example.lab4.data.model.user.UserModel
-import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.databinding.FragmentListBinding
 import com.example.lab4.ui.base.BaseFragment
 import com.example.lab4.ui.dialogfragment.ConfirmDeleteDialogFragment
 import com.example.lab4.ui.extensions.toastLong
 import com.example.lab4.ui.list.adapter.ListNamesAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -133,5 +131,4 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
         listNamesAdapter.notifyItemChanged(position)
         deletePosition = null
     }
-
 }

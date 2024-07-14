@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.lab4.data.model.user.UserModel
-import com.example.lab4.data.repository.bbdd.user.UserBD
 import com.example.lab4.databinding.ItemNamesBinding
 import com.example.lab4.ui.list.adapter.viewholder.UserViewHolder
 
