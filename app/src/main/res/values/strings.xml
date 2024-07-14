@@ -3,6 +3,8 @@
     <string name="toolbar_back">toolbar_back</string>
     <string name="loading_text">Cargando...</string>
     <string name="error_unknown_error">Error desconocido</string>
+    <string name="permission_message">Esta aplicación necesita acceso a tu ubicación para funcionar correctamente. Por favor, ve a Configuración y concede el permiso de ubicación.</string>
+    <string name="permission_denied">Permiso denegado</string>
 
     <!-- List fragment-->
     <string name="list_fragment_title">Lista</string>

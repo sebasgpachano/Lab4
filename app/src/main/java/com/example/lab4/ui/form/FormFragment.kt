@@ -11,7 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
@@ -86,9 +90,10 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
             getLocation()
         } else {
             if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Log.d(TAG, "l> Permiso no concedido")
+                showPermissionDeniedDialog()
+            } else {
+                requireContext().toastLong(getString(R.string.permission_denied))
             }
-            Log.d(TAG, "l> Permiso denegado")
         }
     }
 
@@ -98,20 +103,35 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                Log.d(TAG, "l> Permiso ya concedido")
                 getLocation()
             }
 
             shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                Log.d(TAG, "l> Permiso de localización no concedido, volver a solicitar")
                 callRequestPermissionLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
 
             else -> {
-                Log.d(TAG, "l> Permiso localización no concedido, lo volvemos a solicitar")
                 callRequestPermissionLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
         }
+    }
+
+    private fun showPermissionDeniedDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Permiso necesario")
+            .setMessage(getString(R.string.permission_message))
+            .setPositiveButton("Configuración") { _, _ ->
+                openAppSettings()
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", requireContext().packageName, null)
+        }
+        startActivity(intent)
     }
 
     private fun setUpListeners() {
@@ -233,10 +253,8 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                         val lon = location.longitude
                         binding?.tvLatitude?.text = "$lat"
                         binding?.tvLongitude?.text = "$lon"
-                        Log.d(TAG, "Latitud: $lat, Longitud: $lon")
                     } else {
                         binding?.tvLatitude?.text = "Location not available"
-                        Log.d(TAG, "Location not available, requesting new location")
                         startLocationUpdates()
                     }
                 }

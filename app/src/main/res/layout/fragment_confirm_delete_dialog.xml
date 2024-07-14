@@ -17,15 +17,17 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btCancel"
+        style="@style/ButtonTextOnly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_cancel"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btConfirm"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDialog" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btConfirm"
+        style="@style/ButtonTextOnly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_confirm"
