@@ -28,6 +28,7 @@
     <string name="add_user">Añadir usuario</string>
     <string name="edit_data">Editar datos</string>
     <string name="city_maps">Ver ciudad</string>
+    <string name="location_not_available">Ubicación no disponible</string>
 
     <!-- Detail fragment-->
     <string name="detail_fragment_title">Detalle</string>

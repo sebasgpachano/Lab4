@@ -1,11 +1,15 @@
 package com.example.lab4.ui.list
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -78,16 +82,38 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
     }
 
     private fun setUpSearchBar() {
-        binding?.etSearch?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
-                Unit
+        binding?.etSearch?.apply {
+            addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) =
+                    Unit
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                listNamesAdapter.filter.filter(s)
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    listNamesAdapter.filter.filter(s)
+                }
+
+                override fun afterTextChanged(s: Editable?) = Unit
+            })
+
+            setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == EditorInfo.IME_ACTION_DONE ||
+                    event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER
+                ) {
+                    v.clearFocus()
+                    val imm =
+                        context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+                    true
+                } else {
+                    false
+                }
             }
-
-            override fun afterTextChanged(s: Editable?) = Unit
-        })
+        }
     }
 
     override fun configureToolbarAndConfigScreenSections() {

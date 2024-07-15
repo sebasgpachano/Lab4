@@ -13,10 +13,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.util.Log
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -72,15 +76,8 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                 }
             }
         }
-
-        isEditMode = args.id != -1L
-        if (isEditMode) {
-            formViewModel.getUserById(args.id.toInt())
-            binding?.ibEdit?.visible()
-            disableEdits()
-        } else {
-            binding?.btCity?.invisible()
-        }
+        editMode()
+        keyboardGone()
     }
 
     private val callRequestPermissionLocation = registerForActivityResult(
@@ -254,12 +251,12 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                         binding?.tvLatitude?.text = "$lat"
                         binding?.tvLongitude?.text = "$lon"
                     } else {
-                        binding?.tvLatitude?.text = "Location not available"
+                        binding?.tvLatitude?.text = getString(R.string.location_not_available)
                         startLocationUpdates()
                     }
                 }
                 .addOnFailureListener {
-                    Log.e(TAG, "Failed to get location")
+                    requireContext().toastLong("No se consiguió la ubicación")
                 }
         } else {
             callRequestPermissionLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -286,6 +283,33 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
     override fun onStop() {
         super.onStop()
         fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun keyboardGone() {
+        binding?.etNumber?.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER
+            ) {
+                v.clearFocus()
+                val imm =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun editMode() {
+        isEditMode = args.id != -1L
+        if (isEditMode) {
+            formViewModel.getUserById(args.id.toInt())
+            binding?.ibEdit?.visible()
+            disableEdits()
+        } else {
+            binding?.btCity?.invisible()
+        }
     }
 
     private fun disableEdits() {
