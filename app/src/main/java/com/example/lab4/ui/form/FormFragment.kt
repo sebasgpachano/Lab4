@@ -115,12 +115,12 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
 
     private fun showPermissionDeniedDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Permiso necesario")
+            .setTitle(getString(R.string.permission_needed))
             .setMessage(getString(R.string.permission_message))
-            .setPositiveButton("Configuración") { _, _ ->
+            .setPositiveButton(getString(R.string.config_button)) { _, _ ->
                 openAppSettings()
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(getString(R.string.cancel_button), null)
             .show()
     }
 
@@ -209,7 +209,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                         longitude = lon
                     )
                     formViewModel.updateUser(user)
-                    requireContext().toastLong("Usuario actualizado")
+                    requireContext().toastLong(getString(R.string.user_updated))
                     disableEdits()
                 } else {
                     val user = UserModel(
@@ -256,7 +256,7 @@ class FormFragment : BaseFragment<FragmentFormBinding>(), View.OnClickListener {
                     }
                 }
                 .addOnFailureListener {
-                    requireContext().toastLong("No se consiguió la ubicación")
+                    requireContext().toastLong(getString(R.string.location_not_available))
                 }
         } else {
             callRequestPermissionLocation.launch(Manifest.permission.ACCESS_FINE_LOCATION)

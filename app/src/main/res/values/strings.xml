@@ -3,6 +3,9 @@
     <string name="toolbar_back">toolbar_back</string>
     <string name="loading_text">Cargando...</string>
     <string name="error_unknown_error">Error desconocido</string>
+    <string name="config_button">Configuración</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="permission_needed">Permiso necesario</string>
     <string name="permission_message">Esta aplicación necesita acceso a tu ubicación para funcionar correctamente. Por favor, ve a Configuración y concede el permiso de ubicación.</string>
     <string name="permission_denied">Permiso denegado</string>
 
@@ -29,6 +32,7 @@
     <string name="edit_data">Editar datos</string>
     <string name="city_maps">Ver ciudad</string>
     <string name="location_not_available">Ubicación no disponible</string>
+    <string name="user_updated">Usuario actualizado</string>
 
     <!-- Detail fragment-->
     <string name="detail_fragment_title">Detalle</string>
@@ -36,5 +40,6 @@
 
     <!-- Map fragment-->
     <string name="map_fragment_title">Mapa</string>
+    <string name="city_not_found">No se encontró la ciudad</string>
 
 </resources>
