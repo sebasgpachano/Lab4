@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "986212571317",
+    "project_id": "aerial-rush-427914-t1",
+    "storage_bucket": "aerial-rush-427914-t1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986212571317:android:9522a83f5e68cae2c086fc",
+        "android_client_info": {
+          "package_name": "com.example.lab4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "MAPS_API_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

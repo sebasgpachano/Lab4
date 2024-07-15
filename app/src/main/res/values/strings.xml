@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">Lab4</string>
+    <string name="toolbar_back">toolbar_back</string>
+    <string name="loading_text">Cargando...</string>
+    <string name="error_unknown_error">Error desconocido</string>
+    <string name="permission_message">Esta aplicación necesita acceso a tu ubicación para funcionar correctamente. Por favor, ve a Configuración y concede el permiso de ubicación.</string>
+    <string name="permission_denied">Permiso denegado</string>
+
+    <!-- List fragment-->
+    <string name="list_fragment_title">Lista</string>
+    <string name="dialog_text">¿Estás seguro de que quieres borrar este elemento?</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_confirm">Eliminar</string>
+    <string name="user_deleted">Usuario borrado</string>
+    <string name="confirm_delete_dialog_tag">ConfirmDeleteDialog</string>
+    <string name="search">Buscar...</string>
+
+    <!-- Form fragment-->
+    <string name="name">Nombre</string>
+    <string name="favorite_color">Color favorito</string>
+    <string name="birth_date">Fecha de nacimiento</string>
+    <string name="favorite_city">Ciudad favorita</string>
+    <string name="favorite_number">Número favorito</string>
+    <string name="save">Guardar</string>
+    <string name="location">Localización actual</string>
+    <string name="current_location">Localización</string>
+    <string name="form_fragment_title">Registro</string>
+    <string name="add_user">Añadir usuario</string>
+    <string name="edit_data">Editar datos</string>
+    <string name="city_maps">Ver ciudad</string>
+
+    <!-- Detail fragment-->
+    <string name="detail_fragment_title">Detalle</string>
+    <string name="favorite_city_button">Ciudad favorita</string>
+
+    <!-- Map fragment-->
+    <string name="map_fragment_title">Mapa</string>
+
 </resources>
