@@ -13,6 +13,7 @@
     <string name="button_confirm">Eliminar</string>
     <string name="user_deleted">Usuario borrado</string>
     <string name="confirm_delete_dialog_tag">ConfirmDeleteDialog</string>
+    <string name="search">Buscar...</string>
 
     <!-- Form fragment-->
     <string name="name">Nombre</string>

@@ -1,6 +1,8 @@
 package com.example.lab4.ui.list
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +41,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
     ) {
         setUpListeners()
         configRecyclerView()
+        setUpSearchBar()
     }
 
     private fun configRecyclerView() {
@@ -74,6 +77,19 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
         }
     }
 
+    private fun setUpSearchBar() {
+        binding?.etSearch?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
+                Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                listNamesAdapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) = Unit
+        })
+    }
+
     override fun configureToolbarAndConfigScreenSections() {
         fragmentLayoutWithToolbar()
         showToolbar(title = getString(R.string.list_fragment_title), showBack = false)
@@ -88,7 +104,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
 
         viewLifecycleOwner.lifecycleScope.launch {
             listViewModel.listUsersStateFlow.collect { users ->
-                updateUsers(users)
+                listNamesAdapter.sumbitList(users)
             }
         }
 
@@ -102,12 +118,6 @@ class ListFragment : BaseFragment<FragmentListBinding>(),
             listViewModel.successFlow.collect {
                 requireContext().toastLong(getString(R.string.user_deleted))
             }
-        }
-    }
-
-    private fun updateUsers(userList: List<UserModel>) {
-        listNamesAdapter.submitList(userList) {
-            binding?.rvList?.scrollToPosition(0)
         }
     }
 
