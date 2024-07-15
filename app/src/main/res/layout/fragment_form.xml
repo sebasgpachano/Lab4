@@ -107,6 +107,7 @@
         android:layout_height="wrap_content"
         android:importantForAutofill="no"
         android:inputType="number"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvNumber"

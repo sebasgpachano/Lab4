@@ -99,10 +99,10 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback {
                         myGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
                     }
                 }.addOnFailureListener {
-                    requireContext().toastLong("Error")
+                    requireContext().toastLong(getString(R.string.error_unknown_error))
                 }
             } else {
-                requireContext().toastLong("No se encontró la ciudad")
+                requireContext().toastLong(getString(R.string.city_not_found))
             }
         }.addOnFailureListener { error ->
             Log.e(TAG, "Error encontrando ciudad: ${error.message}", error)
