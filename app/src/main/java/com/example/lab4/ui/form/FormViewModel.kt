@@ -1,5 +1,7 @@
 package com.example.lab4.ui.form
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.lab4.data.model.user.UserModel
 import com.example.lab4.data.repository.BaseResponse
@@ -27,12 +29,10 @@ class FormViewModel @Inject constructor(
 
     fun addUser(user: UserModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            loadingMutableSharedFlow.emit(true)
-            insertUserUseCase(user).collect {
-                when (it) {
+            insertUserUseCase(user).collect { result ->
+                when (result) {
                     is BaseResponse.Error -> {
-                        loadingMutableSharedFlow.emit(false)
-                        errorMutableSharedFlow.emit(it.error)
+                        errorMutableSharedFlow.emit(result.error)
                     }
 
                     is BaseResponse.Success -> {
