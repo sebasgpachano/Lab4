@@ -1,2 +1,3 @@
 Proyecto Lab4
-Room, MVVM
+
+Room, MVVM, SOLID, Clean Code
